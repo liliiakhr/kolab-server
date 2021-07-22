@@ -17,15 +17,11 @@ const userSchema = new Schema({
   },
   image_url: {
     type: String,
-    required: true,
-  },
-  admin: {
-    type: Boolean,
-    required: true,
+    default: '/somewhere/someimage',
   },
   description: {
     type: String,
-    required: true,
+    default: 'Hey welcome to my Kolab profile',
   },
   categories: [{
     type: String, 

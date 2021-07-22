@@ -32,7 +32,7 @@ router.post('/auth/signup', async (req,res, next) => {
     }
 
     try {
-        let user = await UserModel.create({username, email, password: hash, image_url, description, admin: false })
+        let user = await UserModel.create({username, email, password: hash, image_url, description})
         user.password = '***'
         console.log(user)
         req.session.loggedInUser = user
@@ -77,7 +77,7 @@ router.post('/auth/login', async (req, res, next) => {
 
 router.post('/auth/logout', (req,res) => {
     req.session.destroy();
-    req.status(204).json({successMessage: 'Thank you, see you next time'})
+    res.status(204).json({successMessage: 'Thank you, see you next time'})
 })
 
 const isLoggedIn = (req, res, next) => {
