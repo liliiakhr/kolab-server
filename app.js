@@ -40,6 +40,10 @@ app.use("/api", authRoutes);
 
 const homeRoutes = require("./routes/home.routes");
 app.use("/api", homeRoutes);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 030fb5eae422a1d8fbc9200b8e3e7999e16a7b08
 const signUpFlowRoutes = require("./routes/signup-flow.routes");
 app.use("/api", signUpFlowRoutes);
 
