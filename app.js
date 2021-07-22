@@ -35,11 +35,19 @@ app.use(session({
 const allRoutes = require("./routes");
 app.use("/api", allRoutes);
 
+<<<<<<< HEAD
 const authRoutes = require("./routes/auth.routes");
 app.use("/api", authRoutes);
 
 const homeRoutes = require("./routes/home.routes");
 app.use("/api", homeRoutes);
+=======
+const signUpFlowRoutes = require("./routes/signup-flow.routes");
+app.use("/api", signUpFlowRoutes);
+
+const groupRoutes = require("./routes/group.routes");
+app.use("/api", groupRoutes);
+>>>>>>> 2fe384d2dc4fa9da9521c6fdab028509074e5593
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
