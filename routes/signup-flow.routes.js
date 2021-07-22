@@ -12,7 +12,7 @@ router.post('/signup/category', async (req, res, next) => {
     }
     catch(error) {
         res.status(500).json({
-            errorMessage: "Hmm, are you sure you? Please try again!"
+            errorMessage: "Hmm, are you sure? Please try again!"
         })
     }
 });
