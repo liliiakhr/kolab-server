@@ -77,7 +77,7 @@ router.post('/auth/login', async (req, res, next) => {
 
 router.post('/auth/logout', (req,res) => {
     req.session.destroy();
-    req.status(204).json({successMessage: 'Thank you, see you next time'})
+    res.status(204).json({successMessage: 'Thank you, see you next time'})
 })
 
 const isLoggedIn = (req, res, next) => {
