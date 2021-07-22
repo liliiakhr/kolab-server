@@ -32,11 +32,10 @@ router.post('/auth/signup', async (req,res, next) => {
     }
 
     try {
-        let user = await UserModel.create({username, email, password: hash, image_url, description})
-        user.password = '***'
-        console.log(user)
-        req.session.loggedInUser = user
-        res.status(200).json({successMessage: `Welcome to Kolab ${user.username}`})
+        let userData = await UserModel.create({username, email, password: hash, image_url, description})
+        userData.password = '***'
+        req.session.loggedInUser = userData
+        res.status(200).json({userData, successMessage: `Welcome to Kolab ${user.username}`})
     }
     catch (err){
         if (err.code === 11000){
@@ -65,7 +64,7 @@ router.post('/auth/login', async (req, res, next) => {
        if(match){
            userData.password = '***'
            req.session.loggedInUser = userData;
-           res.status(200).json({successMessage: `Welcome back ${userData.username}`})
+           res.status(200).json({userData, successMessage: `Welcome back ${userData.username}`})
        } else{
            res.status(500).json({errorMessage: 'Incorrect Password'})
        }
