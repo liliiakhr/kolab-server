@@ -17,6 +17,10 @@ const groupSchema = new Schema({
     tags: [String],
     admin: {type: Schema.Types.ObjectId, ref: 'user'},
     users: [{type: Schema.Types.ObjectId, ref: 'user'}],
+    postCount: {
+        type: Number,
+        default: 0
+    }
 });
 
 const GroupModel = model("Group", groupSchema);
