@@ -32,7 +32,7 @@ router.post('/auth/signup', async (req,res, next) => {
     }
 
     try {
-        let user = await UserModel.create({username, email, password: hash, image_url, description, admin: false })
+        let user = await UserModel.create({username, email, password: hash, image_url, description})
         user.password = '***'
         console.log(user)
         req.session.loggedInUser = user
