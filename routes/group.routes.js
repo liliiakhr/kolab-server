@@ -4,13 +4,19 @@ const GroupModel = require('../models/Group.model');
 // NEED TO BE TESTED
 router.get('/signup/group', async (req, res, next) => {
 
-    // !! Is query the way to go here or do we have alternatives? !!
     const { categories } = req.query;
 
     try {
-        //  This might cause bugs, categories might need to be put into an array
-        let response = await GroupModel.find({ category: { $in: categories } }).limit(4)
-        res.status(200).json(response)
+        // Finds the groups for the user categories
+        // If less than 4 are found, 4 random ones and add those to the groups found earlier
+        let suggestedGroups = [];
+        let userGroups = await GroupModel.find({ category: { $in: categories } }).limit(4)
+        if (userGroups.length < 4) {
+            let randomGroups = await GroupModel.aggregate([{ $sample: { size: 4 }}])
+            suggestedGroups = [...userGroups, ...randomGroups]
+            suggestedGroups.filter((group, index) => suggestedGroups.indexOf(group) === index)
+        }
+        res.status(200).json(suggestedGroups.splice(0, 4))
     }
      catch(error) {
         res.status(500).json({

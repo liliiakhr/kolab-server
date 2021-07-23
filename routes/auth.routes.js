@@ -87,6 +87,19 @@ const isLoggedIn = (req, res, next) => {
     }
 };
 
+router.post('/user', async (req, res, next) => {
+    try {
+        const user = req.body;
+        let newUser = await UserModel.findByIdAndUpdate(user._id, {user})
+        res.status(200).json({newUser})
+    }
+    catch (error) {
+        res.status(500).json({
+            errorMessage: 'Weird, for some reason we could not update your data. Please try again!'
+          })
+    }
+})
+
 router.get('/user', isLoggedIn, (req,res,next) => {
     res.status(200).json(req.session.loggedInUser);
 });
