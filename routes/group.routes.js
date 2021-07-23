@@ -4,11 +4,12 @@ const GroupModel = require('../models/Group.model');
 // NEED TO BE TESTED
 router.get('/signup/group', async (req, res, next) => {
 
-    const { categories } = req.body;
+    // !! Is query the way to go here or do we have alternatives? !!
+    const { categories } = req.query;
 
     try {
         //  This might cause bugs, categories might need to be put into an array
-        let response = await GroupModel.find({ category: { $in: categories } })
+        let response = await GroupModel.find({ category: { $in: categories } }).limit(4)
         res.status(200).json(response)
     }
      catch(error) {
