@@ -3,7 +3,7 @@ const GroupModel = require('../models/Group.model');
 
 // NEED TO BE TESTED
 router.get('/signup/group', async (req, res, next) => {
-
+    console.log("IRUN ")
     const { categories } = req.query;
 
     try {

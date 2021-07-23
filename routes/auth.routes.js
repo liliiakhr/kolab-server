@@ -72,7 +72,10 @@ router.post('/auth/login', async (req, res, next) => {
 });
 
 router.post('/auth/logout', (req,res) => {
+    console.log(req.session)
     req.session.destroy();
+    console.log(req.session)
+    console.log("I RUN LOGOUT")
     res.status(204).json({successMessage: 'Thank you, see you next time'})
 });
 
