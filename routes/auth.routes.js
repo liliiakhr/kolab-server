@@ -3,7 +3,8 @@ const UserModel = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 
 router.post('/auth/signup', async (req,res, next) => {
-    const {username, email, password, image_url, description} = req.body;
+    const {username, email, password} = req.body;
+
     if (!username || !email || !password) {
         res.status(500).json({errorMessage: "Please fill in all fields"});
         return;
@@ -25,10 +26,11 @@ router.post('/auth/signup', async (req,res, next) => {
     return;
     }
     try {
-        let userData = await UserModel.create({username, email, password: hash, image_url, description})
+        let userData = await UserModel.create({username, email, password: hash})
         userData.password = '***'
         req.session.loggedInUser = userData
-        res.status(200).json({userData, successMessage: `Welcome to Kolab ${user.username}`})
+        res.status(200).json({userData, successMessage: `Welcome to Kolab ${userData.username}`}) 
+        
     }
     catch (err){
         if (err.code === 11000){
@@ -38,10 +40,12 @@ router.post('/auth/signup', async (req,res, next) => {
             })
         }
         else {
+            console.log(err)
             res.status(500).json({
                 errorMessage: 'There has been an error. Try again!',
                 message: err,
             })
+            
         }
     }
 });
