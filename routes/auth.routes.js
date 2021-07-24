@@ -89,8 +89,14 @@ const isLoggedIn = (req, res, next) => {
 
 router.post('/user', async (req, res, next) => {
     try {
+        // The following comments are about having access to the group name in the Navbar
+        // I decided to populate the user (also not optimal)
+        // The other option was to use the groupNames, this would lead to having to update the groupNames everytime the groupName is edited
+        // The third option is to querry for the groups every time the navbar gets rendered, this also makes little sense
+        // We need to discuss (also with Manish) what the best option is, all seem bad
         const {image_url, description, categories, groupNames, groups, posts, friends, friendRequests, _id, username, email, password} = req.body
         let newUser = await UserModel.findByIdAndUpdate(_id, {image_url, description, categories, groupNames, groups, posts, friends, friendRequests, username, email, password}, {new: true})
+                                .populate('groups')
         req.session.loggedInUser = newUser;
         res.status(200).json({newUser})
     }
