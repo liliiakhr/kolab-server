@@ -47,6 +47,9 @@ app.use("/api", signUpFlowRoutes);
 const groupRoutes = require("./routes/group.routes");
 app.use("/api", groupRoutes);
 
+const dynamicGroupRoutes = require("./routes/dynamicGroup.routes");
+app.use("/api", dynamicGroupRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

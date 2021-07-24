@@ -23,6 +23,6 @@ const groupSchema = new Schema({
     }
 });
 
-const GroupModel = model("Group", groupSchema);
+const GroupModel = model("group", groupSchema);
 
 module.exports = GroupModel;

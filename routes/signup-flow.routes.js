@@ -8,7 +8,7 @@ router.post('/signup/category', async (req, res, next) => {
     const { _id, categories } = req.body;
 
     try {
-        let response = await UserModel.findByIdAndUpdate(_id, {categories: categories})
+        let response = await UserModel.findByIdAndUpdate(_id, {categories: categories}, {new: true})
         res.status(200).json(response)
     }
     catch(error) {

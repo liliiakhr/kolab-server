@@ -6,7 +6,6 @@ router.get('/signup/group', async (req, res, next) => {
     const { categories } = req.query;
     
     try {
-        console.log("IRUN ")
         // Finds the groups for the user categories
         // If less than 4 are found, 4 random ones and add those to the groups found earlier
         let suggestedGroups = [];
