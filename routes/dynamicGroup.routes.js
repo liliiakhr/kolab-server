@@ -55,7 +55,6 @@ router.post('/join-group', async (req, res, next) => {
         res.status(200).json(groupData)
     }
     catch(error) {
-        console.log(error)
         res.status(500).json({
             errorMessage: "Something went wrong, please try again!"
         })
@@ -69,11 +68,24 @@ router.post('/leave-group', async (req, res, next) => {
         res.status(200).json(groupData)
     }
     catch(error) {
-        console.log(error)
         res.status(500).json({
             errorMessage: "Something went wrong, please try again!"
         })
     }
 })
+
+router.patch('/edit-group', async (req, res, next) => {
+    try {
+        const { _id, name, description, tags, category, image_url, admin, users, postCount } = req.body;
+        let groupData = await GroupModel.findByIdAndUpdate(_id, { name, description, tags, category, image_url, admin, users, postCount }, {new: true})
+        res.status(200).json(groupData)
+    }
+    catch(error) {
+        res.status(500).json({
+            errorMessage: "Sawry, we could not update your data... Please try again!"
+        })
+    }
+})
+
 
 module.exports = router;
