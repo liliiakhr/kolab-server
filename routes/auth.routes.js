@@ -89,10 +89,8 @@ const isLoggedIn = (req, res, next) => {
 
 router.post('/user', async (req, res, next) => {
     try {
-        console.log("OLD USER", req.body)
         const {image_url, description, categories, groupNames, groups, posts, friends, friendRequests, _id, username, email, password} = req.body
         let newUser = await UserModel.findByIdAndUpdate(_id, {image_url, description, categories, groupNames, groups, posts, friends, friendRequests, username, email, password}, {new: true})
-        console.log("NEW USER", newUser)
         res.status(200).json({newUser})
     }
     catch (error) {

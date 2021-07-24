@@ -36,9 +36,9 @@ router.get('/signup/group', async (req, res, next) => {
 
 router.post("/add-group", async (req, res, next) => {
     try {
-        const { name, description, groupOrigin, image_url, category, tags } = req.body;
-        let response = await GroupModel.create({ name, description, groupOrigin, image_url, category, tags })
-        res.status(200).json(response)
+        const { name, description, image_url, category, tags, admin, users } = req.body;
+        let group = await GroupModel.create({ name, description, image_url, category, tags, admin, users })
+        res.status(200).json({group, successMessage: 'Congratulations! You are now a group admin'})
     }
     catch(error) {
         res.status(500).json({
