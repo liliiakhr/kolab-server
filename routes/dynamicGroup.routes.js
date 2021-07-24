@@ -51,9 +51,21 @@ router.post('/:group/add-post', async (req, res, next) => {
 router.post('/join-group', async (req, res, next) => {
     try {
         const { groupId, userId } = req.body;
-        console.log(groupId, userId)
         let groupData = await GroupModel.findByIdAndUpdate(groupId, { $push: { users: userId } }, {new: true})
-        console.log(groupData)
+        res.status(200).json(groupData)
+    }
+    catch(error) {
+        console.log(error)
+        res.status(500).json({
+            errorMessage: "Something went wrong, please try again!"
+        })
+    }
+})
+
+router.post('/leave-group', async (req, res, next) => {
+    try {
+        const { groupId, userId } = req.body;
+        let groupData = await GroupModel.findByIdAndUpdate(groupId, { $pull: { users: userId } }, {new: true})
         res.status(200).json(groupData)
     }
     catch(error) {
