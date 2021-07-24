@@ -27,6 +27,7 @@ const userSchema = new Schema({
     type: String, 
     enum: ['art', 'sports', 'science', 'lifestyle', 'nature', 'politics', 'entertainment','magic', 'other']
   }],
+  groupNames: [String],
   groups: [{
     type: Schema.Types.ObjectId,
      ref: 'group'
@@ -46,6 +47,6 @@ const userSchema = new Schema({
   
 });
 
-const User = model("User", userSchema);
+const User = model("user", userSchema);
 
 module.exports = User;

@@ -7,14 +7,14 @@ const nestedCommentSchema = new Schema({
     },
     owner:{
         type: Schema.Types.ObjectId, 
-        ref: 'User'
+        ref: 'user'
     },
     likes: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'}],
+        ref: 'user'}],
     dislikes: [{
         type: Schema.Types.ObjectId, 
-        ref: 'User'}],
+        ref: 'user'}],
 });
 
 
@@ -25,20 +25,25 @@ const postSchema = new Schema({
         required: true},
     content: {
         type: String,
-        required: true},
+        required: true
+    },   
+    creator: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'user'
+    }],
     likes: [{
         type: Schema.Types.ObjectId,
-        ref: 'User'}],
+        ref: 'user'}],
     dislikes: [{
         type: Schema.Types.ObjectId, 
-        ref: 'User'}],
+        ref: 'user'}],
     comments: [nestedCommentSchema],
-    groupOrigin: [{
+    groupOrigin: {
         type: Schema.Types.ObjectId,
-        ref:'group'}]
+        ref:'group'}
 }, { timestamps: true });
 
 
-const PostModel = model("Post", postSchema);
+const PostModel = model("post", postSchema);
 
 module.exports = PostModel;

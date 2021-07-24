@@ -3,7 +3,8 @@ const { Schema, model } = require("mongoose");
 const groupSchema = new Schema({
     name: {
         type: String, 
-        required: true
+        required: true,
+        unique: true
     },
     image_url: String,
     description: {
@@ -23,6 +24,6 @@ const groupSchema = new Schema({
     }
 });
 
-const GroupModel = model("Group", groupSchema);
+const GroupModel = model("group", groupSchema);
 
 module.exports = GroupModel;

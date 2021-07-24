@@ -37,16 +37,35 @@ router.get('/signup/group', async (req, res, next) => {
 
 router.post("/add-group", async (req, res, next) => {
     try {
-        const { name, description, groupOrigin, image_url, category, tags } = req.body;
-        let response = await GroupModel.create({ name, description, groupOrigin, image_url, category, tags })
-        res.status(200).json(response)
+        const { name, description, image_url, category, tags, admin, users } = req.body;
+        let group = await GroupModel.create({ name, description, image_url, category, tags, admin, users })
+        res.status(200).json({group, successMessage: 'Congratulations! You are now a group admin'})
     }
     catch(error) {
+        if(error.code === 1000){
+            res.status(500).json({
+                errorMessage: "That group already exists, sorry :(",
+                error: error
+            }) 
+        }else{
         res.status(500).json({
             errorMessage: "Something went wrong, please try again!",
             error: error
         })
+        }
     }
 });
+
+router.get('/groups', async (req, res , next) => {
+    try {
+        let response = await GroupModel.find()
+        res.status(200).json(response)
+    } catch (error) {
+        res.status(500).json({
+            errorMessage: "Could not retrieve groups",
+            error: error
+        })
+    }
+})
 
 module.exports = router;
