@@ -7,7 +7,6 @@ router.post('/post/comment', async (req, res, next) => {
         let response = await PostModel.findByIdAndUpdate(postId, { $push: { comments: comment } }, {new: true})
                                         .populate('creator')
                                         .populate('comments.owner')
-        console.log(response)
         res.status(200).json(response)
     }
      catch(error) {
@@ -19,15 +18,27 @@ router.post('/post/comment', async (req, res, next) => {
 
 router.post('/post/likes', async (req, res, next) => {
     try {
-        const { postOrCommentId, userId, type } = req.body;
-        if (type === 'likes') {
+        const { type, action, postOrCommentId, userId } = req.body;
+        if (action === 'likes' && type === "post") {
             let response = await PostModel.findByIdAndUpdate(postOrCommentId, { $addToSet: { likes: userId }, $pull: { dislikes: userId } }, {new: true})
                                         .populate('creator')
                                         .populate('comments.owner')
             res.status(200).json(response)
         }
-        if (type === 'dislikes') {
+        if (action === 'dislikes' && type === "post") {
             let response = await PostModel.findByIdAndUpdate(postOrCommentId, { $pull: { likes: userId }, $addToSet: { dislikes: userId } }, {new: true})
+                                        .populate('creator')
+                                        .populate('comments.owner')
+            res.status(200).json(response)
+        }
+        if (action === 'likes' && type === "comment") {
+            let response = await PostModel.findOneAndUpdate({ "comments._id": postOrCommentId }, { $addToSet: { "comments.$.likes": userId }, $pull: { "comments.$.dislikes": userId } }, {new: true})
+                                        .populate('creator')
+                                        .populate('comments.owner')
+            res.status(200).json(response)
+        }
+        if (action === 'dislikes' && type === "comment") {
+            let response = await PostModel.findOneAndUpdate({ "comments._id": postOrCommentId }, { $pull: { "comments.$.likes": userId }, $addToSet: { "comments.$.dislikes": userId } }, {new: true})
                                         .populate('creator')
                                         .populate('comments.owner')
             res.status(200).json(response)
@@ -39,7 +50,5 @@ router.post('/post/likes', async (req, res, next) => {
         })
     }
 });
-
-// put ternary inside of route  pull / push
 
 module.exports = router;
