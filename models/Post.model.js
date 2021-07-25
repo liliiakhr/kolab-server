@@ -26,11 +26,11 @@ const postSchema = new Schema({
     content: {
         type: String,
         required: true
-    },   
-    creator: [{
+    },
+    creator: {
         type: Schema.Types.ObjectId, 
         ref: 'user'
-    }],
+    },
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'user'}],
