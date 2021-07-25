@@ -1,6 +1,7 @@
 const router = require ("express").Router();
 const UserModel = require('../models/User.model');
 const bcrypt = require('bcryptjs');
+const {isLoggedIn} = require('../middlewares/middlewares');
 
 router.post('/auth/signup', async (req,res, next) => {
     const {username, email, password} = req.body;
@@ -76,16 +77,6 @@ router.post('/auth/logout', (req,res) => {
     res.status(204).json({successMessage: 'Thank you, see you next time'})
 });
 
-const isLoggedIn = (req, res, next) => {
-    if (req.session.loggedInUser) {
-      next()
-    }
-    else {
-      res.status(401).json({
-          errorMessage: 'Not an authorized user'
-        })
-    }
-};
 
 router.post('/user', async (req, res, next) => {
     try {
@@ -104,7 +95,7 @@ router.post('/user', async (req, res, next) => {
         res.status(500).json({
             errorMessage: 'Weird, for some reason we could not update your data. Please try again!'
         })
-    }
+    } 
 })
 
 router.get('/user', isLoggedIn, (req,res,next) => {

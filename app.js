@@ -50,7 +50,14 @@ app.use("/api", groupRoutes);
 const dynamicGroupRoutes = require("./routes/dynamicGroup.routes");
 app.use("/api", dynamicGroupRoutes);
 
+const dynamicUserRoutes = require("./routes/dynamicUser.routes");
+app.use("/api", dynamicUserRoutes);
+
+const cloudinaryRoutes = require("./routes/cloudinary.routes");
+app.use("/api", cloudinaryRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
 module.exports = app;
+ 
