@@ -1,6 +1,20 @@
 const router = require('express').Router()
 const UserModel = require('../models/User.model')
 
+router.post('/people', async (req, res, next) => {    
+    
+    try{
+        let users = await UserModel.find()    
+        res.status(200).json(users)
+    }  
+    catch(error){
+        res.status(500).json({
+            errorMessage: "Something went wrong, let's try again!",
+            error: error
+        })
+    }
+})
+
 router.get('/friends', async (req, res, next) => {
     const {_id, friendRequests} = req.session.loggedInUser
     try{

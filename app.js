@@ -50,6 +50,9 @@ app.use("/api", groupRoutes);
 const dynamicGroupRoutes = require("./routes/dynamicGroup.routes");
 app.use("/api", dynamicGroupRoutes);
 
+const friendRoutes = require('./routes/friends.routes');
+app.use("/api", friendRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
