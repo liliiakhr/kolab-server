@@ -17,7 +17,7 @@ const userSchema = new Schema({
   },
   image_url: {
     type: String,
-    default: '/somewhere/someimage',
+    default: 'https://assets.3dtotal.com/data-import/data/images/tutorials/2513-tid-albert-einstein-rendering-jpg.e0iif8.image.45x.jpg',
   },
   description: {
     type: String,
