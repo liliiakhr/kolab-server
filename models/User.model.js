@@ -40,11 +40,11 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
      ref: 'user'
 }],
-  friendRequests: [{
-    type: Schema.Types.ObjectId, 
-    ref:'user'
-}]
-  
+  friendRequests:[{type: Schema.Types.ObjectId, ref:'user'}],
+  lastLogin: {
+    type: Date,
+    default: new Date()
+  } 
 });
 
 const User = model("user", userSchema);
