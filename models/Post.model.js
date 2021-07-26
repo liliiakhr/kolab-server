@@ -15,6 +15,7 @@ const nestedCommentSchema = new Schema({
     dislikes: [{
         type: Schema.Types.ObjectId, 
         ref: 'user'}],
+    createdAt: String
 });
 
 
