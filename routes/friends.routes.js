@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const UserModel = require('../models/User.model')
 
-router.post('/people', async (req, res, next) => {    
-    
+
+router.post('/people', async (req, res, next) => {      
     try{
-        let users = await UserModel.find()    
+        let users = await UserModel.find({},{username: 1, _id: 1, description: 1, image_url: 1, categories: 1 })    
         res.status(200).json(users)
     }  
     catch(error){
@@ -15,11 +15,12 @@ router.post('/people', async (req, res, next) => {
     }
 })
 
-router.get('/friends', async (req, res, next) => {
-    const {_id, friendRequests} = req.session.loggedInUser
+router.post('/getFriends', async (req, res, next) => {
+    console.log(req.session.loggedInUser)
     try{
-        let userFriends = await UserModel.findById(_id).populate('friends').populate('friendRequests')
-        res.status(200).json({userFriends, successMessage: `You have ${friendRequests.length} pending friend requests`})
+        let userData = await UserModel.findById(req.session.loggedInUser._id).populate('friends').populate('friendRequests')
+        console.log(userData)
+        res.status(200).json(userData.friends)
     } catch (error){
         res.status(500).json({
             errorMessage: "Something went wrong, let's try again!",
