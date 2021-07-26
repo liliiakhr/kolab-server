@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Mongoose } = require("mongoose");
 
 // TODO: Please make sure you edit the user model to whatever makes sense in this case
 const userSchema = new Schema({
@@ -40,11 +40,14 @@ const userSchema = new Schema({
     type: Schema.Types.ObjectId,
      ref: 'user'
 }],
-  friendRequests: [{
-    type: Schema.Types.ObjectId, 
-    ref:'user'
-}]
-  
+  friendRequests: new Schema({
+    userIds: [{type: Schema.Types.ObjectId, ref:'user'}]
+  }, {timestamps:true}),
+  // update on sign in
+  lastLogin: {
+    type: Date,
+    default: new Date()
+  }
 });
 
 const User = model("user", userSchema);

@@ -34,10 +34,8 @@ router.post('/:group/add-post', async (req, res, next) => {
     
     try {
         const { title, content, creator, groupOrigin, image_url} = req.body;
-
         let groupData = await PostModel.create({ title, content, creator, groupOrigin, image_url })
         await GroupModel.findByIdAndUpdate(groupOrigin, {$inc : {postCount: 1}})
-    
         res.status(200).json(groupData)
     }
     catch(error) {
