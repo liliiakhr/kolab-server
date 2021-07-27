@@ -47,6 +47,19 @@ router.post('/event/participate', async (req, res, next) => {
     }
 });
 
+router.get('/events/all', async (req, res, next) => {
+    try {
+        let eventData = await EventModel.find({})
+                                .populate('users')
+                                .populate('groupOrigin')
+        res.status(200).json(eventData)
+    }
+     catch(error) {
+        res.status(500).json({
+            errorMessage: 'No events were found'
+        })
+    }
+});
 
 module.exports = router;
 
