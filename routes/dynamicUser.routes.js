@@ -8,7 +8,7 @@ const UserModel = require("../models/User.model");
 router.get('/profile/:id', isLoggedIn, async (req, res, next) => {
     try {
         const {id} = req.params;
-        const user = await UserModel.findById(id)
+        let user = await UserModel.findById(id)
             .populate("posts");
         res.status(200).json(user);
     }
