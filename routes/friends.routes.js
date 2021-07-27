@@ -16,11 +16,9 @@ router.post('/people', async (req, res, next) => {
 })
 
 router.post('/getFriends', async (req, res, next) => {
-    console.log(req.session.loggedInUser)
     try{
         let userData = await UserModel.findById(req.session.loggedInUser._id).populate('friends').populate('friendRequests')
-        console.log(userData)
-        res.status(200).json(userData.friends)
+        res.status(200).json({friends: userData.friends, requests: userData.friendRequests })
     } catch (error){
         res.status(500).json({
             errorMessage: "Something went wrong, let's try again!",
@@ -47,14 +45,15 @@ router.post('/friend/response' , async (req, res, next) => {
     const {_id} = req.session.loggedInUser
     const {response, userId} = req.body
     try{
-        if(response){
-            let userData = await UserModel.findByIdAndUpdate(_id, {$and: [{$push:{ friends: userId}}, {$pull: {friendRequests: userId}}]}, {new: true})
-            let friend = await UserModel.findByIdAndUpdate(userId, {$push: {friends: _id}}, {new: true})
+        if(response === true){
+            await UserModel.findByIdAndUpdate(_id, {$push:{ friends: userId}}, {new: true})
+            await UserModel.findByIdAndUpdate(userId, {$push: {friends: _id}}, {new: true})
+            let userData = await UserModel.findByIdAndUpdate(_id, {$pull: {friendRequests: userId}}, {new: true})
             req.session.loggedInUser = userData
             res.status(200).json({userData, successMessage: `You and ${friend.username} are now friends`})
-        } else {
-            let user = await UserModel.findByIdAndUpdate(_id, {$pull: {friendRequests: userId}}, {new: true})
-            req.session.loggedInUser = user
+        } else if (response === false) {
+            let userData = await UserModel.findByIdAndUpdate(_id, {$pull: {friendRequests: userId}}, {new: true})
+            req.session.loggedInUser = userData
             res.status(200).json({userData, successMessage: 'Request complete'})
         }
     } catch (error) {
