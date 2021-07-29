@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const {isLoggedIn} = require('../middlewares/middlewares');
 
 router.post('/auth/signup', async (req,res, next) => {
-    const {username, email, password} = req.body;
+    let {username, email, password} = req.body;
 
     if (!username || !email || !password) {
         res.status(500).json({errorMessage: "Please fill in all fields"});
@@ -27,6 +27,7 @@ router.post('/auth/signup', async (req,res, next) => {
     return;
     }
     try {
+        username = username.toLowerCase()
         let userData = await UserModel.create({username, email, password: hash})
         userData.password = '***'
         req.session.loggedInUser = userData
@@ -52,11 +53,12 @@ router.post('/auth/signup', async (req,res, next) => {
 });
 
 router.post('/auth/login', async (req, res, next) => {
-    const {username, password} = req.body
+    let {username, password} = req.body
     if(!username || !password){
         res.status(500).json({errorMessage: "Please enter username and password"})
     } 
     try{
+        username = username.toLowerCase()
        let userData = await UserModel.findOne({username})
        let match = await bcrypt.compareSync(password, userData.password)
        if(match){
@@ -94,8 +96,17 @@ router.post('/user', async (req, res, next) => {
     } 
 })
 
-router.get('/user', isLoggedIn, (req,res,next) => {
-    res.status(200).json(req.session.loggedInUser);
+router.get('/user', isLoggedIn, async (req,res,next) => {
+    // update this
+    try {
+        let user = await UserModel.findById(req.session.loggedInUser._id).populate('groups')
+        res.status(200).json(user);
+    }
+    catch (error) {
+        res.status(500).json({
+            errorMessage: 'Something happened, are you sure that you have an account?'
+        })
+    }
 });
 
 module.exports = router;
