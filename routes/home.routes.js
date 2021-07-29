@@ -4,9 +4,8 @@ const PostModel =  require('../models/Post.model');
 const GroupModel = require('../models/Group.model');
 
 router.get('/home', async (req, res) => {
-
     try{
-        let response = await PostModel.find().limit(10)
+        let response = await PostModel.find({}, null, {sort: {createdAt: -1}}).limit(25)
                                 .populate('creator')
                                 .populate('comments.owner')
         res.status(200).json(response)
